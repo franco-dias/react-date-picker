@@ -1,6 +1,8 @@
 import { format, parse, isValid, isBefore, isAfter } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import InputMask from "react-input-mask";
+import { IconButton, InputContainer } from "./date-picker-input.styles";
+import { CalendarBlank } from "@phosphor-icons/react";
 
 interface DatePickerInputProps {
   minimum: Date;
@@ -57,26 +59,19 @@ export const DatePickerInput = ({
         max={format(maximum, "yyyy-MM-dd")}
         value={selectedDate ? format(selectedDate, "yyyy-MM-dd") : undefined}
       />
-
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          width: 200,
-          margin: "0 auto",
-        }}
-      >
+      <InputContainer>
         <InputMask
           mask="99/99/9999"
           maskChar={null}
           value={inputState}
           onChange={handleChange}
           inputRef={inputRef}
+          placeholder={format(new Date(), "dd/MM/yyyy")}
         />
-        {hasError && <span>Invalid date!</span>}
-      </div>
-
-      <button onClick={clear}>clear</button>
+        <IconButton>
+          <CalendarBlank size={20} />
+        </IconButton>
+      </InputContainer>
     </>
   );
 };
