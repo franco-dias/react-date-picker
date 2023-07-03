@@ -40,5 +40,3 @@ export const yearOptions = eachYearOfInterval({
   label: format(date, "yyyy"),
   value: format(date, "yyyy"),
 }));
-
-export const headers = ["S", "M", "T", "W", "T", "F", "S"];

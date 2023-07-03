@@ -9,24 +9,28 @@ import {
   getMonth,
   isEqual,
 } from "date-fns";
-import { DayObject, MonthContainer, MonthHeader } from "./date-picker.styles";
-import { headers } from "./date-picker.helpers";
+import {
+  DayObject,
+  MonthContainer,
+  MonthHeader,
+} from "./date-picker-month.styles";
+import { headers } from "./date-picker-month.helpers";
 
 interface DatePickerMonth {
-  displayDate: Date;
+  displayedMonth: Date;
   selectedDate: Date | null;
   onDateChange: (newDate: Date) => void;
   onMonthChange: (newDate: Date) => void;
 }
 
 const DatePickerMonth = ({
-  displayDate,
+  displayedMonth,
   selectedDate,
   onDateChange,
   onMonthChange,
 }: DatePickerMonth) => {
   const { firstDayToBeDisplayed, lastDayToBeDisplayed, currentMonth } =
-    useMonthMetadata(displayDate);
+    useMonthMetadata(displayedMonth);
 
   const daysToBeDisplayed = useMemo(
     () =>
@@ -37,8 +41,8 @@ const DatePickerMonth = ({
     [firstDayToBeDisplayed, lastDayToBeDisplayed]
   );
 
-  const toPreviousMonth = () => onMonthChange(addMonths(displayDate, -1));
-  const toNextMonth = () => onMonthChange(addMonths(displayDate, 1));
+  const toPreviousMonth = () => onMonthChange(addMonths(displayedMonth, -1));
+  const toNextMonth = () => onMonthChange(addMonths(displayedMonth, 1));
 
   const handleDayClick = (day: Date) => () => {
     if (getMonth(day) !== currentMonth) {
@@ -51,12 +55,13 @@ const DatePickerMonth = ({
     <>
       <MonthHeader>
         <button onClick={toPreviousMonth}>‹</button>
-        <h4>{format(displayDate, "MMMM yyyy")}</h4>
+        <h4>{format(displayedMonth, "MMMM yyyy")}</h4>
         <button onClick={toNextMonth}>›</button>
       </MonthHeader>
       <MonthContainer>
         {headers.map((h, index) => (
           <DayObject
+            as="div"
             disabled
             key={h + index}
             $color={index === 0 ? "red" : undefined}

@@ -2,9 +2,8 @@ import styled, { css } from "styled-components";
 
 const MonthContainer = styled.div`
   display: grid;
+  gap: 0.125rem;
   grid-template-columns: repeat(7, 1fr);
-  width: 24rem;
-  gap: 0.5rem;
 `;
 
 const MonthHeader = styled.div`
@@ -13,8 +12,8 @@ const MonthHeader = styled.div`
   align-items: center;
 
   > button {
-    width: 3rem;
-    height: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
     font-size: 1.5rem;
     display: flex;
     align-items: center;
@@ -29,14 +28,14 @@ const DayObject = styled.button<{
   $color?: string;
   $opaque?: boolean;
 }>`
-  width: 3rem;
-  height: 3rem;
+  width: 2.25rem;
+  height: 2.25rem;
   display: flex;
   align-items: center;
   box-sizing: border-box;
   justify-content: center;
 
-  font-size: 1em;
+  font-size: 0.875rem;
   cursor: pointer;
   font-weight: 500;
   border-radius: 8px;
