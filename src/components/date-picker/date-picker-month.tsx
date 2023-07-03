@@ -5,11 +5,12 @@ import {
   eachDayOfInterval,
   format,
   getDate,
+  getDay,
   getMonth,
   isEqual,
 } from "date-fns";
 import { DayObject, MonthContainer, MonthHeader } from "./date-picker.styles";
-import { monthOptions, yearOptions } from "./date-picker.helpers";
+import { headers } from "./date-picker.helpers";
 
 interface DatePickerMonth {
   displayDate: Date;
@@ -39,6 +40,13 @@ const DatePickerMonth = ({
   const toPreviousMonth = () => onMonthChange(addMonths(displayDate, -1));
   const toNextMonth = () => onMonthChange(addMonths(displayDate, 1));
 
+  const handleDayClick = (day: Date) => () => {
+    if (getMonth(day) !== currentMonth) {
+      onMonthChange(day);
+    }
+    return onDateChange(day);
+  };
+
   return (
     <>
       <MonthHeader>
@@ -47,12 +55,22 @@ const DatePickerMonth = ({
         <button onClick={toNextMonth}>›</button>
       </MonthHeader>
       <MonthContainer>
+        {headers.map((h, index) => (
+          <DayObject
+            disabled
+            key={h + index}
+            $color={index === 0 ? "red" : undefined}
+          >
+            {h}
+          </DayObject>
+        ))}
         {daysToBeDisplayed.map((day: Date) => {
           return (
             <DayObject
               key={day.toISOString()}
-              onClick={() => onDateChange(day)}
-              disabled={getMonth(day) !== currentMonth}
+              onClick={handleDayClick(day)}
+              $opaque={getMonth(day) !== currentMonth}
+              $color={getDay(day) === 0 ? "red" : undefined}
               $highlighted={selectedDate ? isEqual(selectedDate, day) : false}
             >
               {getDate(day)}

@@ -24,7 +24,11 @@ const MonthHeader = styled.div`
   }
 `;
 
-const DayObject = styled.button<{ $highlighted: boolean }>`
+const DayObject = styled.button<{
+  $highlighted?: boolean;
+  $color?: string;
+  $opaque?: boolean;
+}>`
   width: 3rem;
   height: 3rem;
   display: flex;
@@ -48,10 +52,30 @@ const DayObject = styled.button<{ $highlighted: boolean }>`
     outline: 4px auto -webkit-focus-ring-color;
   }
 
+  &:disabled {
+    cursor: unset;
+  }
+
+  ${({ $color }) =>
+    $color &&
+    css`
+      color: ${$color};
+    `}
+
   ${({ $highlighted }) =>
     $highlighted &&
     css`
       background-color: #646cff;
+      color: #fff;
+    `}
+
+  ${({ $opaque }) =>
+    $opaque &&
+    css`
+      color: #ababab;
+      &:hover {
+        border-color: #fff;
+      }
     `}
 `;
 
