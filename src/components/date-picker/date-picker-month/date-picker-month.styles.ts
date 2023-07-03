@@ -1,13 +1,25 @@
+import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 
-const MonthContainer = styled.div`
+const MonthContainer = styled(motion.div)`
+  padding: 0.5rem;
+  background-color: #333;
+  position: absolute;
+  top: calc(100% + 1rem);
+  left: 2rem;
+  border-radius: 0.5rem;
+`;
+
+const GridContainer = styled.div`
+  position: relative;
   display: grid;
-  gap: 0.125rem;
+  gap: 0.25rem;
   grid-template-columns: repeat(7, 1fr);
 `;
 
 const MonthHeader = styled.div`
   display: flex;
+  padding: 0 1rem 1rem;
   justify-content: space-between;
   align-items: center;
 
@@ -21,6 +33,11 @@ const MonthHeader = styled.div`
     background: transparent;
     border: none;
   }
+
+  > h4 {
+    margin: 0;
+    font-weight: 400;
+  }
 `;
 
 const DayObject = styled.button<{
@@ -28,8 +45,8 @@ const DayObject = styled.button<{
   $color?: string;
   $opaque?: boolean;
 }>`
-  width: 2.25rem;
-  height: 2.25rem;
+  width: 2.5rem;
+  height: 2.5rem;
   display: flex;
   align-items: center;
   box-sizing: border-box;
@@ -38,9 +55,9 @@ const DayObject = styled.button<{
   font-size: 0.875rem;
   cursor: pointer;
   font-weight: 500;
-  border-radius: 8px;
+  border-radius: 0.75rem;
   font-family: inherit;
-  background-color: #1a1a1a;
+  background-color: #303030;
   border: 1px solid transparent;
   transition: border-color 0.25s;
   &:not(:disabled):hover {
@@ -55,6 +72,15 @@ const DayObject = styled.button<{
     cursor: unset;
   }
 
+  ${({ $opaque }) =>
+    $opaque &&
+    css`
+      color: #ababab;
+      &:hover {
+        border-color: #fff;
+      }
+    `}
+
   ${({ $color }) =>
     $color &&
     css`
@@ -67,15 +93,6 @@ const DayObject = styled.button<{
       background-color: #646cff;
       color: #fff;
     `}
-
-  ${({ $opaque }) =>
-    $opaque &&
-    css`
-      color: #ababab;
-      &:hover {
-        border-color: #fff;
-      }
-    `}
 `;
 
-export { MonthHeader, MonthContainer, DayObject };
+export { MonthHeader, MonthContainer, GridContainer, DayObject };

@@ -4,7 +4,7 @@ const InputContainer = styled.div`
   width: 280px;
   display: flex;
   box-sizing: border-box;
-  padding: 0.25rem 1rem;
+  padding: 0.25rem 0.25rem 0.25rem 1rem;
   align-items: center;
   background-color: #333;
   border-radius: 0.5rem;

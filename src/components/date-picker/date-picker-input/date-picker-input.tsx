@@ -3,12 +3,14 @@ import { useEffect, useRef, useState } from "react";
 import InputMask from "react-input-mask";
 import { IconButton, InputContainer } from "./date-picker-input.styles";
 import { CalendarBlank } from "@phosphor-icons/react";
+import { DateFormats } from "../date-picker.types";
 
 interface DatePickerInputProps {
   minimum: Date;
   maximum: Date;
   onChange: (date: Date | null) => void;
   selectedDate: Date | null;
+  onCalendarClick: () => void;
 }
 
 export const DatePickerInput = ({
@@ -16,17 +18,18 @@ export const DatePickerInput = ({
   maximum,
   onChange,
   selectedDate,
+  onCalendarClick,
 }: DatePickerInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [hasError, setHasError] = useState(false);
 
   const [inputState, setInputState] = useState(
-    selectedDate ? format(selectedDate, "dd/MM/yyyy") : ""
+    selectedDate ? format(selectedDate, DateFormats.BRAZILIAN) : ""
   );
 
   useEffect(() => {
     if (!selectedDate) return;
-    setInputState(format(selectedDate, "dd/MM/yyyy"));
+    setInputState(format(selectedDate, DateFormats.BRAZILIAN));
   }, [selectedDate]);
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +38,11 @@ export const DatePickerInput = ({
       setHasError(false);
       return;
     }
-    const parsedDate = parse(ev.target.value, "dd/MM/yyyy", new Date());
+    const parsedDate = parse(
+      ev.target.value,
+      DateFormats.BRAZILIAN,
+      new Date()
+    );
 
     if (!isValid(parsedDate)) return setHasError(false);
     if (!isBefore(minimum, parsedDate) || !isAfter(maximum, parsedDate))
@@ -55,9 +62,11 @@ export const DatePickerInput = ({
       <input
         hidden
         type="date"
-        min={format(minimum, "yyyy-MM-dd")}
-        max={format(maximum, "yyyy-MM-dd")}
-        value={selectedDate ? format(selectedDate, "yyyy-MM-dd") : undefined}
+        min={format(minimum, DateFormats.DEFAULT)}
+        max={format(maximum, DateFormats.DEFAULT)}
+        value={
+          selectedDate ? format(selectedDate, DateFormats.DEFAULT) : undefined
+        }
       />
       <InputContainer>
         <InputMask
@@ -66,9 +75,9 @@ export const DatePickerInput = ({
           value={inputState}
           onChange={handleChange}
           inputRef={inputRef}
-          placeholder={format(new Date(), "dd/MM/yyyy")}
+          placeholder={format(new Date(), DateFormats.BRAZILIAN)}
         />
-        <IconButton>
+        <IconButton onClick={onCalendarClick}>
           <CalendarBlank size={20} />
         </IconButton>
       </InputContainer>

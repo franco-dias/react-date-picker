@@ -1,4 +1,5 @@
-import { useMemo } from "react";
+import { useCallback, useMemo, useRef } from "react";
+import { AnimatePresence } from "framer-motion";
 import { useMonthMetadata } from "./use-month-metadata";
 import {
   addMonths,
@@ -11,26 +12,33 @@ import {
 } from "date-fns";
 import {
   DayObject,
+  GridContainer,
   MonthContainer,
   MonthHeader,
 } from "./date-picker-month.styles";
-import { headers } from "./date-picker-month.helpers";
-
-interface DatePickerMonth {
-  displayedMonth: Date;
-  selectedDate: Date | null;
-  onDateChange: (newDate: Date) => void;
-  onMonthChange: (newDate: Date) => void;
-}
+import { fadeAnimation, headers } from "./date-picker-month.helpers";
+import { useOutsideClick } from "./use-outside-click";
+import { DatePickerMonthProps } from "./date-picker-month.types";
 
 const DatePickerMonth = ({
   displayedMonth,
   selectedDate,
   onDateChange,
   onMonthChange,
-}: DatePickerMonth) => {
+  display,
+  setDisplay,
+}: DatePickerMonthProps) => {
+  const containerRef = useRef<HTMLDivElement>(null);
   const { firstDayToBeDisplayed, lastDayToBeDisplayed, currentMonth } =
     useMonthMetadata(displayedMonth);
+
+  const dismiss = useCallback(() => setDisplay(false), [setDisplay]);
+
+  useOutsideClick({
+    ref: containerRef,
+    active: display,
+    cb: dismiss,
+  });
 
   const daysToBeDisplayed = useMemo(
     () =>
@@ -48,42 +56,48 @@ const DatePickerMonth = ({
     if (getMonth(day) !== currentMonth) {
       onMonthChange(day);
     }
-    return onDateChange(day);
+    onDateChange(day);
+    dismiss();
   };
 
   return (
-    <>
-      <MonthHeader>
-        <button onClick={toPreviousMonth}>‹</button>
-        <h4>{format(displayedMonth, "MMMM yyyy")}</h4>
-        <button onClick={toNextMonth}>›</button>
-      </MonthHeader>
-      <MonthContainer>
-        {headers.map((h, index) => (
-          <DayObject
-            as="div"
-            disabled
-            key={h + index}
-            $color={index === 0 ? "red" : undefined}
-          >
-            {h}
-          </DayObject>
-        ))}
-        {daysToBeDisplayed.map((day: Date) => {
-          return (
-            <DayObject
-              key={day.toISOString()}
-              onClick={handleDayClick(day)}
-              $opaque={getMonth(day) !== currentMonth}
-              $color={getDay(day) === 0 ? "red" : undefined}
-              $highlighted={selectedDate ? isEqual(selectedDate, day) : false}
-            >
-              {getDate(day)}
-            </DayObject>
-          );
-        })}
-      </MonthContainer>
-    </>
+    <AnimatePresence>
+      {display && (
+        <MonthContainer {...fadeAnimation} ref={containerRef}>
+          <MonthHeader>
+            <button onClick={toPreviousMonth}>‹</button>
+            <h4>{format(displayedMonth, "MMMM yyyy")}</h4>
+            <button onClick={toNextMonth}>›</button>
+          </MonthHeader>
+          <GridContainer>
+            {headers.map((h, index) => (
+              <DayObject
+                disabled
+                key={h + index}
+                $color={index === 0 ? "red" : undefined}
+              >
+                {h}
+              </DayObject>
+            ))}
+            {daysToBeDisplayed.map((day: Date) => {
+              return (
+                <DayObject
+                  key={day.toISOString()}
+                  onClick={handleDayClick(day)}
+                  $opaque={getMonth(day) !== currentMonth}
+                  $highlighted={
+                    selectedDate ? isEqual(selectedDate, day) : false
+                  }
+                  $color={getDay(day) === 0 ? "red" : undefined}
+                >
+                  {getDate(day)}
+                </DayObject>
+              );
+            })}
+          </GridContainer>
+        </MonthContainer>
+      )}
+    </AnimatePresence>
   );
 };
 
