@@ -1,7 +1,12 @@
 import { format, parse, isValid, isBefore, isAfter } from "date-fns";
 import { useEffect, useRef, useState } from "react";
 import InputMask from "react-input-mask";
-import { IconButton, InputContainer } from "./date-picker-input.styles";
+import {
+  ErrorMessage,
+  IconButton,
+  InputContainer,
+  InputField,
+} from "./date-picker-input.styles";
 import { CalendarBlank } from "@phosphor-icons/react";
 import { DateFormats } from "../date-picker.types";
 
@@ -21,7 +26,7 @@ export const DatePickerInput = ({
   onCalendarClick,
 }: DatePickerInputProps) => {
   const inputRef = useRef<HTMLInputElement>(null);
-  const [hasError, setHasError] = useState(false);
+  const [touched, setTouched] = useState(false);
 
   const [inputState, setInputState] = useState(
     selectedDate ? format(selectedDate, DateFormats.BRAZILIAN) : ""
@@ -34,8 +39,7 @@ export const DatePickerInput = ({
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setInputState(ev.target.value);
-    if (!ev.target.value) {
-      setHasError(false);
+    if (!ev.target.value || !touched) {
       return;
     }
     const parsedDate = parse(
@@ -44,11 +48,9 @@ export const DatePickerInput = ({
       new Date()
     );
 
-    if (!isValid(parsedDate)) return setHasError(false);
-    if (!isBefore(minimum, parsedDate) || !isAfter(maximum, parsedDate))
-      return setHasError(true);
+    if (!isValid(parsedDate)) return;
+    if (!isBefore(minimum, parsedDate) || !isAfter(maximum, parsedDate)) return;
 
-    setHasError(false);
     onChange(parsedDate);
   };
 
@@ -58,7 +60,7 @@ export const DatePickerInput = ({
   };
 
   return (
-    <>
+    <InputField>
       <input
         hidden
         type="date"
@@ -74,6 +76,7 @@ export const DatePickerInput = ({
           maskChar={null}
           value={inputState}
           onChange={handleChange}
+          onBlur={() => setTouched(true)}
           inputRef={inputRef}
           placeholder={format(new Date(), DateFormats.BRAZILIAN)}
         />
@@ -81,6 +84,6 @@ export const DatePickerInput = ({
           <CalendarBlank size={20} />
         </IconButton>
       </InputContainer>
-    </>
+    </InputField>
   );
 };

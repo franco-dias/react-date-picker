@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 const InputContainer = styled.div`
   width: 280px;
@@ -35,4 +35,16 @@ const IconButton = styled.button`
   cursor: pointer;
 `;
 
-export { InputContainer, IconButton };
+const ErrorMessage = styled.span`
+  margin-top: 0.25rem;
+  color: red;
+  font-size: 0.875rem;
+`;
+
+const InputField = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+`;
+
+export { InputContainer, IconButton, ErrorMessage, InputField };
