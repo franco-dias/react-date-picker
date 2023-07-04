@@ -20,8 +20,7 @@ export const useCurrentMonth = (selectedDate: Date | null) => {
   );
 
   const onMonthScreenChange = useCallback(
-    (ev: React.ChangeEvent<HTMLSelectElement>, whatChanged: string) => {
-      const { value } = ev.target;
+    (value: string, whatChanged: string) => {
       if (whatChanged === "month")
         return setMonthAndYearOnScreen(
           parse(`${yearOnScreen}-${value}`, "yyyy-MM", new Date())

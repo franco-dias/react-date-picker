@@ -22,7 +22,7 @@ button, input {
 body {
   margin: 0;
   display: flex;
-  justify-content: flex-end;
+  justify-content: center;
   min-width: 320px;
   min-height: 100vh;
 }
