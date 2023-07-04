@@ -1,5 +1,7 @@
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { parseDate } from "../../helpers/date";
+import { DateFormats } from "./date-picker.types";
 
 export const useCurrentMonth = (selectedDate: Date | null) => {
   const [monthAndYearOnScreen, setMonthAndYearOnScreen] = useState(
@@ -21,14 +23,14 @@ export const useCurrentMonth = (selectedDate: Date | null) => {
 
   const onMonthScreenChange = useCallback(
     (value: string, whatChanged: string) => {
-      if (whatChanged === "month")
-        return setMonthAndYearOnScreen(
-          parse(`${yearOnScreen}-${value}`, "yyyy-MM", new Date())
-        );
+      const dateString =
+        whatChanged === "month"
+          ? `${yearOnScreen}-${value}`
+          : `${value}-${monthOnScreen}`;
 
-      return setMonthAndYearOnScreen(
-        parse(`${value}-${monthOnScreen}`, "yyyy-MM", new Date())
-      );
+      const parsedDate = parseDate(dateString, DateFormats.YEAR_MONTH);
+
+      setMonthAndYearOnScreen(parsedDate);
     },
     [yearOnScreen, monthOnScreen]
   );

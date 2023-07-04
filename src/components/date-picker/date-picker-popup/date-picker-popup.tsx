@@ -1,13 +1,13 @@
 import { useCallback, useRef, useState } from "react";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import { MonthContainer } from "./date-picker-month.styles";
 import { fadeAnimation } from "./date-picker-month.helpers";
-import { useOutsideClick } from "./use-outside-click";
 import { DatePickerMonthProps } from "./date-picker-month.types";
 import { createPortal } from "react-dom";
-import { useFixedElementPosition } from "./use-fixed-element-position";
 import { CalendarView } from "./calendar-view";
 import { MonthSelectionView } from "./month-selection-view";
+import { useOutsideClick } from "../../../hooks/use-outside-click";
+import { useFixedElementPosition } from "../../../hooks/use-fixed-element-position";
 
 export enum ViewModes {
   CALENDAR = "CALENDAR",
@@ -15,18 +15,18 @@ export enum ViewModes {
 }
 
 const DatePickerPopup = ({
-  displayedMonth,
-  selectedDate,
-  onDateChange,
-  onMonthChange,
-  display,
-  setDisplay,
-  inputContainerRef,
-  yearOnScreen,
-  monthOnScreen,
-  onMonthScreenChange,
   minimum,
   maximum,
+  display,
+  setDisplay,
+  selectedDate,
+  onDateChange,
+  yearOnScreen,
+  monthOnScreen,
+  onMonthChange,
+  displayedMonth,
+  inputContainerRef,
+  onMonthScreenChange,
 }: DatePickerMonthProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<ViewModes>(ViewModes.CALENDAR);
@@ -61,24 +61,30 @@ const DatePickerPopup = ({
             $position={position}
           >
             {viewMode === ViewModes.CALENDAR && (
-              <CalendarView
-                changeView={toggleView}
-                dismiss={dismiss}
-                displayedMonth={displayedMonth}
-                onDateChange={onDateChange}
-                onMonthChange={onMonthChange}
-                selectedDate={selectedDate}
-              />
+              <motion.div {...fadeAnimation}>
+                <CalendarView
+                  changeView={toggleView}
+                  dismiss={dismiss}
+                  displayedMonth={displayedMonth}
+                  onDateChange={onDateChange}
+                  onMonthChange={onMonthChange}
+                  selectedDate={selectedDate}
+                  minimum={minimum}
+                  maximum={maximum}
+                />
+              </motion.div>
             )}
             {viewMode === ViewModes.MONTH_SELECTION && (
-              <MonthSelectionView
-                minimum={minimum}
-                maximum={maximum}
-                changeView={toggleView}
-                yearOnScreen={yearOnScreen}
-                monthOnScreen={monthOnScreen}
-                onMonthScreenChange={onMonthScreenChange}
-              />
+              <motion.div {...fadeAnimation}>
+                <MonthSelectionView
+                  minimum={minimum}
+                  maximum={maximum}
+                  changeView={toggleView}
+                  yearOnScreen={yearOnScreen}
+                  monthOnScreen={monthOnScreen}
+                  onMonthScreenChange={onMonthScreenChange}
+                />
+              </motion.div>
             )}
           </MonthContainer>
         </div>

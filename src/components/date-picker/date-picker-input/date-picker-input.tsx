@@ -1,4 +1,4 @@
-import { format, parse, isValid, isBefore, isAfter } from "date-fns";
+import { format, isValid } from "date-fns";
 import { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import {
@@ -8,14 +8,8 @@ import {
 } from "./date-picker-input.styles";
 import { CalendarBlank } from "@phosphor-icons/react";
 import { DateFormats } from "../date-picker.types";
-
-interface DatePickerInputProps {
-  minimum: Date;
-  maximum: Date;
-  onChange: (date: Date | null) => void;
-  selectedDate: Date | null;
-  onCalendarClick: () => void;
-}
+import { DatePickerInputProps } from "./date-picker-input.types";
+import { isBetween, parseDate } from "../../../helpers/date";
 
 export const DatePickerInput = ({
   minimum,
@@ -38,21 +32,13 @@ export const DatePickerInput = ({
     if (!ev.target.value) {
       return;
     }
-    const parsedDate = parse(
-      ev.target.value,
-      DateFormats.BRAZILIAN,
-      new Date()
-    );
+    const { value } = ev.target;
+    const parsedDate = parseDate(value, DateFormats.BRAZILIAN);
 
-    if (!isValid(parsedDate)) return;
-    if (!isBefore(minimum, parsedDate) || !isAfter(maximum, parsedDate)) return;
+    if (!isValid(parsedDate) || !isBetween(parsedDate, minimum, maximum))
+      return;
 
     onChange(parsedDate);
-  };
-
-  const clear = () => {
-    onChange(null);
-    setInputState("");
   };
 
   return (
@@ -65,6 +51,7 @@ export const DatePickerInput = ({
         value={
           selectedDate ? format(selectedDate, DateFormats.DEFAULT) : undefined
         }
+        onChange={handleChange}
       />
       <InputContainer>
         <InputMask
