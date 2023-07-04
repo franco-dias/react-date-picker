@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { DatePickerMonth } from "./date-picker-month/date-picker-month";
+import { DatePickerPopup } from "./date-picker-popup/date-picker-popup";
 import { format, startOfDay } from "date-fns";
 // import { monthOptions, yearOptions } from "./date-picker.helpers";
 import { DatePickerInput } from "./date-picker-input/date-picker-input";
@@ -24,9 +24,9 @@ export const DatePicker = ({
   const [displayPopup, setDisplayPopup] = useState(false);
 
   const {
-    // monthOnScreen,
-    // yearOnScreen,
-    // onMonthScreenChange,
+    monthOnScreen,
+    yearOnScreen,
+    onMonthScreenChange,
     monthAndYearOnScreen,
     setMonthAndYearOnScreen,
   } = useCurrentMonth(selectedDate);
@@ -54,28 +54,10 @@ export const DatePicker = ({
           onCalendarClick={() => setDisplayPopup(true)}
         />
       </div>
-
-      {/* <select
-        value={monthOnScreen}
-        onChange={(ev) => onMonthScreenChange(ev, "month")}
-      >
-        {monthOptions.map((month) => (
-          <option key={month.value} value={month.value}>
-            {month.label}
-          </option>
-        ))}
-      </select>
-      <select
-        value={yearOnScreen}
-        onChange={(ev) => onMonthScreenChange(ev, "year")}
-      >
-        {yearOptions.map((year) => (
-          <option key={year.value} value={year.label}>
-            {year.label}
-          </option>
-        ))}
-      </select> */}
-      <DatePickerMonth
+      <DatePickerPopup
+        yearOnScreen={yearOnScreen}
+        monthOnScreen={monthOnScreen}
+        onMonthScreenChange={onMonthScreenChange}
         display={displayPopup}
         selectedDate={selectedDate}
         setDisplay={setDisplayPopup}

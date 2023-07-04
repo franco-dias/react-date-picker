@@ -24,24 +24,27 @@ const GridContainer = styled.div`
 const MonthHeader = styled.div`
   display: flex;
   padding: 0 1rem 1rem;
+  gap: 1rem;
   justify-content: space-between;
   align-items: center;
 
   > button {
     width: 2.5rem;
     height: 2.5rem;
-    font-size: 1.5rem;
     display: flex;
     align-items: center;
     justify-content: center;
     background: transparent;
     border: none;
     cursor: pointer;
+    font-size: 1rem;
+    font-weight: 400;
+    white-space: nowrap;
+    width: fit-content;
   }
 
   > h4 {
     margin: 0;
-    font-weight: 400;
   }
 `;
 

@@ -1,8 +1,7 @@
 import { format, parse, isValid, isBefore, isAfter } from "date-fns";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import InputMask from "react-input-mask";
 import {
-  ErrorMessage,
   IconButton,
   InputContainer,
   InputField,
@@ -25,8 +24,6 @@ export const DatePickerInput = ({
   selectedDate,
   onCalendarClick,
 }: DatePickerInputProps) => {
-  const [touched, setTouched] = useState(false);
-
   const [inputState, setInputState] = useState(
     selectedDate ? format(selectedDate, DateFormats.BRAZILIAN) : ""
   );
@@ -38,7 +35,7 @@ export const DatePickerInput = ({
 
   const handleChange = (ev: React.ChangeEvent<HTMLInputElement>) => {
     setInputState(ev.target.value);
-    if (!ev.target.value || !touched) {
+    if (!ev.target.value) {
       return;
     }
     const parsedDate = parse(
@@ -75,7 +72,6 @@ export const DatePickerInput = ({
           maskChar={null}
           value={inputState}
           onChange={handleChange}
-          onBlur={() => setTouched(true)}
           placeholder={format(new Date(), DateFormats.BRAZILIAN)}
         />
         <IconButton onClick={onCalendarClick}>
