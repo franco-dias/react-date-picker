@@ -11,6 +11,8 @@ export interface DatePickerMonthProps {
   yearOnScreen: string;
   monthOnScreen: string;
   onMonthScreenChange: (value: string, whatChanged: string) => void;
+  minimum: Date;
+  maximum: Date;
 }
 
 export enum NavigationKeys {

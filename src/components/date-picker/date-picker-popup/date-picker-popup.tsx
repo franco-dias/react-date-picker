@@ -25,6 +25,8 @@ const DatePickerPopup = ({
   yearOnScreen,
   monthOnScreen,
   onMonthScreenChange,
+  minimum,
+  maximum,
 }: DatePickerMonthProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<ViewModes>(ViewModes.CALENDAR);
@@ -70,6 +72,8 @@ const DatePickerPopup = ({
             )}
             {viewMode === ViewModes.MONTH_SELECTION && (
               <MonthSelectionView
+                minimum={minimum}
+                maximum={maximum}
                 changeView={toggleView}
                 yearOnScreen={yearOnScreen}
                 monthOnScreen={monthOnScreen}

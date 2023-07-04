@@ -7,10 +7,14 @@ interface MonthSelectionViewProps {
   changeView(): void;
   yearOnScreen: string;
   monthOnScreen: string;
+  minimum: Date;
+  maximum: Date;
   onMonthScreenChange: (value: string, whatChanged: string) => void;
 }
 
 export const MonthSelectionView = ({
+  minimum,
+  maximum,
   changeView,
   yearOnScreen,
   monthOnScreen,
@@ -18,11 +22,13 @@ export const MonthSelectionView = ({
 }: MonthSelectionViewProps) => {
   useEffect(() => {
     document.getElementById(`year-${yearOnScreen}`)?.scrollIntoView();
-  }, [yearOnScreen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   useEffect(() => {
     document.getElementById(`month-${monthOnScreen}`)?.scrollIntoView();
-  }, [monthOnScreen]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const onYearClick = (year: string) => () => {
     onMonthScreenChange(year, "year");
@@ -38,6 +44,7 @@ export const MonthSelectionView = ({
       </MonthHeader>
       <MonthGrid>
         <div className="option-list">
+          {/* @TODO - add month validation based on current year */}
           {monthOptions.map((month) => (
             <Option
               key={month.value}
@@ -50,7 +57,7 @@ export const MonthSelectionView = ({
           ))}
         </div>
         <div className="option-list year">
-          {yearOptions.map((year) => (
+          {yearOptions(minimum, maximum).map((year) => (
             <Option
               key={year.value}
               id={`year-${year.value}`}

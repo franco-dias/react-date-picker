@@ -34,6 +34,7 @@ export const CalendarView = ({
   onDateChange,
   dismiss,
 }: CalendarViewProps) => {
+  // @TODO - add validation based on minimum and maximum dates
   const toPreviousMonth = () => onMonthChange(addMonths(displayedMonth, -1));
   const toNextMonth = () => onMonthChange(addMonths(displayedMonth, 1));
   const { firstDayToBeDisplayed, lastDayToBeDisplayed, currentMonth } =

@@ -55,16 +55,18 @@ export const DatePicker = ({
         />
       </div>
       <DatePickerPopup
-        yearOnScreen={yearOnScreen}
-        monthOnScreen={monthOnScreen}
-        onMonthScreenChange={onMonthScreenChange}
+        minimum={minimum}
+        maximum={maximum}
         display={displayPopup}
         selectedDate={selectedDate}
+        yearOnScreen={yearOnScreen}
         setDisplay={setDisplayPopup}
         onDateChange={setSelectedDate}
+        monthOnScreen={monthOnScreen}
         inputContainerRef={inputContainerRef}
         displayedMonth={monthAndYearOnScreen}
         onMonthChange={setMonthAndYearOnScreen}
+        onMonthScreenChange={onMonthScreenChange}
       />
     </DatePickerContainer>
   );

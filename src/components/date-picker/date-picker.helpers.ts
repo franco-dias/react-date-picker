@@ -33,10 +33,11 @@ export const monthOptions = eachMonthOfInterval({
   value: format(date, "MM"),
 }));
 
-export const yearOptions = eachYearOfInterval({
-  start: new Date(1900, 0, 1),
-  end: new Date(),
-}).map((date: Date) => ({
-  label: format(date, "yyyy"),
-  value: format(date, "yyyy"),
-}));
+export const yearOptions = (start: Date, end: Date) =>
+  eachYearOfInterval({
+    start,
+    end,
+  }).map((date: Date) => ({
+    label: format(date, "yyyy"),
+    value: format(date, "yyyy"),
+  }));
