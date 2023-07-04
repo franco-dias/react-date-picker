@@ -25,7 +25,6 @@ export const DatePickerInput = ({
   selectedDate,
   onCalendarClick,
 }: DatePickerInputProps) => {
-  const inputRef = useRef<HTMLInputElement>(null);
   const [touched, setTouched] = useState(false);
 
   const [inputState, setInputState] = useState(
@@ -77,7 +76,6 @@ export const DatePickerInput = ({
           value={inputState}
           onChange={handleChange}
           onBlur={() => setTouched(true)}
-          inputRef={inputRef}
           placeholder={format(new Date(), DateFormats.BRAZILIAN)}
         />
         <IconButton onClick={onCalendarClick}>

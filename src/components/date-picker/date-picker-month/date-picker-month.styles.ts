@@ -1,13 +1,17 @@
 import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 
-const MonthContainer = styled(motion.div)`
+const MonthContainer = styled(motion.div)<{
+  $position: { left: number; top: number };
+}>`
   padding: 0.5rem;
-  background-color: #333;
-  position: absolute;
-  top: calc(100% + 1rem);
-  left: 2rem;
   border-radius: 0.5rem;
+  background-color: #333;
+  position: fixed;
+  ${({ $position }) => css`
+    left: ${$position.left}px;
+    top: ${$position.top}px;
+  `}
 `;
 
 const GridContainer = styled.div`
@@ -32,6 +36,7 @@ const MonthHeader = styled.div`
     justify-content: center;
     background: transparent;
     border: none;
+    cursor: pointer;
   }
 
   > h4 {

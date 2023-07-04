@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef } from "react";
+import { useCallback, useMemo, useRef, useEffect } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useMonthMetadata } from "./use-month-metadata";
 import {
@@ -19,6 +19,7 @@ import {
 import { fadeAnimation, headers } from "./date-picker-month.helpers";
 import { useOutsideClick } from "./use-outside-click";
 import { DatePickerMonthProps } from "./date-picker-month.types";
+import { createPortal } from "react-dom";
 
 const DatePickerMonth = ({
   displayedMonth,
@@ -27,6 +28,7 @@ const DatePickerMonth = ({
   onMonthChange,
   display,
   setDisplay,
+  inputContainerRef,
 }: DatePickerMonthProps) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const { firstDayToBeDisplayed, lastDayToBeDisplayed, currentMonth } =
@@ -60,10 +62,22 @@ const DatePickerMonth = ({
     dismiss();
   };
 
-  return (
+  const inputRect = inputContainerRef.current?.getBoundingClientRect();
+  const containerPosition = inputRect
+    ? {
+        left: inputRect.left + 16,
+        top: inputRect.top + inputRect.height + 16,
+      }
+    : { left: 0, top: 0 };
+
+  return createPortal(
     <AnimatePresence>
       {display && (
-        <MonthContainer {...fadeAnimation} ref={containerRef}>
+        <MonthContainer
+          {...fadeAnimation}
+          ref={containerRef}
+          $position={containerPosition}
+        >
           <MonthHeader>
             <button onClick={toPreviousMonth}>‹</button>
             <h4>{format(displayedMonth, "MMMM yyyy")}</h4>
@@ -97,7 +111,8 @@ const DatePickerMonth = ({
           </GridContainer>
         </MonthContainer>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.getElementById("root") as HTMLElement
   );
 };
 

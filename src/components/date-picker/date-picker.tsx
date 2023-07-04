@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useRef, useState } from "react";
 import { DatePickerMonth } from "./date-picker-month/date-picker-month";
 import { format, startOfDay } from "date-fns";
 // import { monthOptions, yearOptions } from "./date-picker.helpers";
@@ -17,6 +17,7 @@ export const DatePicker = ({
   minimum = new Date(1900, 0, 1),
   maximum = new Date(),
 }: DatePickerProps) => {
+  const inputContainerRef = useRef<HTMLDivElement>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(
     value ? startOfDay(value) : null
   );
@@ -44,13 +45,15 @@ export const DatePicker = ({
           selectedDate ? format(selectedDate, "yyyy-MM-dd") : "null"
         }`}
       </p>
-      <DatePickerInput
-        minimum={minimum}
-        maximum={maximum}
-        onChange={onInputChange}
-        selectedDate={selectedDate}
-        onCalendarClick={() => setDisplayPopup(true)}
-      />
+      <div ref={inputContainerRef}>
+        <DatePickerInput
+          minimum={minimum}
+          maximum={maximum}
+          onChange={onInputChange}
+          selectedDate={selectedDate}
+          onCalendarClick={() => setDisplayPopup(true)}
+        />
+      </div>
 
       {/* <select
         value={monthOnScreen}
@@ -73,10 +76,11 @@ export const DatePicker = ({
         ))}
       </select> */}
       <DatePickerMonth
-        setDisplay={setDisplayPopup}
         display={displayPopup}
         selectedDate={selectedDate}
+        setDisplay={setDisplayPopup}
         onDateChange={setSelectedDate}
+        inputContainerRef={inputContainerRef}
         displayedMonth={monthAndYearOnScreen}
         onMonthChange={setMonthAndYearOnScreen}
       />
