@@ -61,10 +61,6 @@ export const CalendarView = ({
     [firstDayToBeDisplayed, lastDayToBeDisplayed]
   );
 
-  console.log({ minimum, maximum, displayedMonth });
-
-  console.log(differenceInMonths(minimum, displayedMonth));
-
   const canGoToPreviousMonth = useMemo(
     () => differenceInMonths(minimum, displayedMonth),
     [minimum, displayedMonth]
