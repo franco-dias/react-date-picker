@@ -1,4 +1,4 @@
-import { useCallback, useMemo, useRef, useEffect } from "react";
+import { useCallback, useMemo, useRef, useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { useMonthMetadata } from "./use-month-metadata";
 import {
@@ -20,6 +20,7 @@ import { fadeAnimation, headers } from "./date-picker-month.helpers";
 import { useOutsideClick } from "./use-outside-click";
 import { DatePickerMonthProps } from "./date-picker-month.types";
 import { createPortal } from "react-dom";
+import { useFixedElementPosition } from "./use-fixed-element-position";
 
 const DatePickerMonth = ({
   displayedMonth,
@@ -62,21 +63,26 @@ const DatePickerMonth = ({
     dismiss();
   };
 
-  const inputRect = inputContainerRef.current?.getBoundingClientRect();
-  const containerPosition = inputRect
-    ? {
-        left: inputRect.left + 16,
-        top: inputRect.top + inputRect.height + 16,
-      }
-    : { left: 0, top: 0 };
+  const popupPosition = useFixedElementPosition({
+    isDisplayed: display,
+    elementRef: containerRef,
+    triggerRef: inputContainerRef,
+  });
+
+  // left overflow = rect.left + rect.width > window.innerWidth
+  // left adjustment = rect.left + rect.width - window.innerWidth + 16
+
+  // top overflow = rect.top + rect.height > window.innerWidth
+  // top adjustment = rect.top + rect.height - window.innerHeight + 16
 
   return createPortal(
     <AnimatePresence>
       {display && (
         <MonthContainer
+          id="test"
           {...fadeAnimation}
           ref={containerRef}
-          $position={containerPosition}
+          $position={popupPosition}
         >
           <MonthHeader>
             <button onClick={toPreviousMonth}>‹</button>
