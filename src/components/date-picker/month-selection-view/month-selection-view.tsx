@@ -1,5 +1,5 @@
 import { CaretLeft } from "@phosphor-icons/react";
-import { MonthHeader } from "./date-picker-month.styles";
+import { Header } from "../date-picker-popup/date-picker-popup.styles";
 import { MonthGrid, Option } from "./month-selection-view.styles";
 import { monthOptions, yearOptions } from "../date-picker.helpers";
 import { useEffect } from "react";
@@ -37,11 +37,11 @@ export const MonthSelectionView = ({
 
   return (
     <>
-      <MonthHeader style={{ justifyContent: "flex-start" }}>
+      <Header style={{ justifyContent: "flex-start" }}>
         <button onClick={changeView} title="Back to calendar">
           <CaretLeft />
         </button>
-      </MonthHeader>
+      </Header>
       <MonthGrid>
         <div className="option-list">
           {/* @TODO - add month validation based on current year */}

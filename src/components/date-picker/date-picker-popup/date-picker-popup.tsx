@@ -1,11 +1,11 @@
 import { useCallback, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { MonthContainer } from "./date-picker-month.styles";
-import { fadeAnimation } from "./date-picker-month.helpers";
-import { DatePickerMonthProps } from "./date-picker-month.types";
+import { MonthContainer } from "./date-picker-popup.styles";
+import { fadeAnimation } from "./date-picker-popup.helpers";
+import { DatePickerMonthProps } from "./date-picker-popup.types";
 import { createPortal } from "react-dom";
-import { CalendarView } from "./calendar-view";
-import { MonthSelectionView } from "./month-selection-view";
+import { CalendarView } from "../calendar-view/calendar-view";
+import { MonthSelectionView } from "../month-selection-view/month-selection-view";
 import { useOutsideClick } from "../../../hooks/use-outside-click";
 import { useFixedElementPosition } from "../../../hooks/use-fixed-element-position";
 
@@ -31,7 +31,10 @@ const DatePickerPopup = ({
   const containerRef = useRef<HTMLDivElement>(null);
   const [viewMode, setViewMode] = useState<ViewModes>(ViewModes.CALENDAR);
 
-  const dismiss = useCallback(() => setDisplay(false), [setDisplay]);
+  const dismiss = useCallback(() => {
+    setViewMode(ViewModes.CALENDAR);
+    setDisplay(false);
+  }, [setDisplay]);
 
   const { position, floatingElementRef } = useFixedElementPosition({
     anchorRef: inputContainerRef,

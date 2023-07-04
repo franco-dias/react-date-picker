@@ -7,27 +7,14 @@ import {
   getMonth,
   isEqual,
 } from "date-fns";
-import {
-  DayObject,
-  GridContainer,
-  MonthHeader,
-} from "./date-picker-month.styles";
+import { DayObject, GridContainer } from "./calendar-view.styles";
 import { useMonthMetadata } from "./use-month-metadata";
 import { useMemo } from "react";
-import { headers } from "./date-picker-month.helpers";
+import { headers } from "./calendar-view.helpers";
 import { CaretLeft, CaretRight } from "@phosphor-icons/react";
 import { differenceInMonths } from "../../../helpers/date";
-
-interface CalendarViewProps {
-  dismiss(): void;
-  changeView(): void;
-  displayedMonth: Date;
-  selectedDate: Date | null;
-  minimum: Date;
-  maximum: Date;
-  onDateChange(date: Date): void;
-  onMonthChange(date: Date): void;
-}
+import { Header } from "../date-picker-popup/date-picker-popup.styles";
+import { CalendarViewProps } from "./calendar-view.types";
 
 export const CalendarView = ({
   selectedDate,
@@ -73,7 +60,7 @@ export const CalendarView = ({
 
   return (
     <>
-      <MonthHeader>
+      <Header>
         <button
           onClick={toPreviousMonth}
           disabled={!canGoToPreviousMonth}
@@ -91,7 +78,7 @@ export const CalendarView = ({
         >
           <CaretRight />
         </button>
-      </MonthHeader>
+      </Header>
       <GridContainer>
         {headers.map((h, index) => (
           <DayObject
