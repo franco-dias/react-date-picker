@@ -1,10 +1,7 @@
 import { motion } from "framer-motion";
 import styled, { css } from "styled-components";
 
-const MonthContainer = styled(motion.div).withConfig({
-  shouldForwardProp: (prop) =>
-    !["initial", "animate", "exit", "transition"].includes(prop),
-})<{
+const MonthContainer = styled(motion.div)<{
   $position: { left: number; top: number };
 }>`
   padding: 0.5rem;

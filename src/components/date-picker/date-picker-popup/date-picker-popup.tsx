@@ -1,5 +1,5 @@
 import { useCallback, useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence } from "framer-motion";
 import { MonthContainer } from "./date-picker-popup.styles";
 import { fadeAnimation } from "./date-picker-popup.helpers";
 import { DatePickerMonthProps } from "./date-picker-popup.types";
@@ -58,36 +58,31 @@ const DatePickerPopup = ({
       {display && (
         <div ref={containerRef}>
           <MonthContainer
-            id="test"
             {...fadeAnimation}
             ref={floatingElementRef}
             $position={position}
           >
             {viewMode === ViewModes.CALENDAR && (
-              <motion.div {...fadeAnimation}>
-                <CalendarView
-                  changeView={toggleView}
-                  dismiss={dismiss}
-                  displayedMonth={displayedMonth}
-                  onDateChange={onDateChange}
-                  onMonthChange={onMonthChange}
-                  selectedDate={selectedDate}
-                  minimum={minimum}
-                  maximum={maximum}
-                />
-              </motion.div>
+              <CalendarView
+                changeView={toggleView}
+                dismiss={dismiss}
+                displayedMonth={displayedMonth}
+                onDateChange={onDateChange}
+                onMonthChange={onMonthChange}
+                selectedDate={selectedDate}
+                minimum={minimum}
+                maximum={maximum}
+              />
             )}
             {viewMode === ViewModes.MONTH_SELECTION && (
-              <motion.div {...fadeAnimation}>
-                <MonthSelectionView
-                  minimum={minimum}
-                  maximum={maximum}
-                  changeView={toggleView}
-                  yearOnScreen={yearOnScreen}
-                  monthOnScreen={monthOnScreen}
-                  onMonthScreenChange={onMonthScreenChange}
-                />
-              </motion.div>
+              <MonthSelectionView
+                minimum={minimum}
+                maximum={maximum}
+                changeView={toggleView}
+                yearOnScreen={yearOnScreen}
+                monthOnScreen={monthOnScreen}
+                onMonthScreenChange={onMonthScreenChange}
+              />
             )}
           </MonthContainer>
         </div>
