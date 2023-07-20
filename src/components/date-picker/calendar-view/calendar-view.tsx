@@ -58,6 +58,8 @@ export const CalendarView = ({
     [maximum, displayedMonth]
   );
 
+  console.log({ canGoToNextMonth, canGoToPreviousMonth });
+
   return (
     <>
       <Header>

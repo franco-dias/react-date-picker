@@ -4,6 +4,7 @@ import { parseDate } from "../../helpers/date";
 import { DateFormats } from "./date-picker.types";
 
 export const useCurrentMonth = (selectedDate: Date | null) => {
+  // @TODO - reopen popup on the selected value month
   const [monthAndYearOnScreen, setMonthAndYearOnScreen] = useState(
     selectedDate || new Date()
   );

@@ -1,13 +1,13 @@
 import { useCallback, useRef, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { MonthContainer } from "./date-picker-popup.styles";
-import { fadeAnimation } from "./date-picker-popup.helpers";
 import { DatePickerMonthProps } from "./date-picker-popup.types";
 import { createPortal } from "react-dom";
 import { CalendarView } from "../calendar-view/calendar-view";
 import { MonthSelectionView } from "../month-selection-view/month-selection-view";
 import { useOutsideClick } from "../../../hooks/use-outside-click";
 import { useFixedElementPosition } from "../../../hooks/use-fixed-element-position";
+import { fadeAnimation } from "../../../helpers/animations";
 
 export enum ViewModes {
   CALENDAR = "CALENDAR",
